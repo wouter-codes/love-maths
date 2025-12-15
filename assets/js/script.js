@@ -23,6 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+/** TO DO
+ * 1. Add the gameType check to runGame() function
+ * 2. Create the display questions function
+ * 3. Modify the calculateCorrectAnswer() function
+ */
+
 /**
  * The main game "loop", called when the script is first loaded
  * and after the user's answer has been processed
@@ -44,9 +50,9 @@ function runGame(gameType) {
         displayMultiplyQuestion(num1, num2);
     } else if (gameType === "subtract") {
         displaySubtractQuestion(num1, num2);
-    } // } else if (gameType === "division") {
-    //     displayDivisionQuestion(num1, num2);
-    else {
+    } else if (gameType === "division") {
+        displayDivisionQuestion(num1, num2);
+    } else {
         alert(`Unknown game type: ${gameType}`);
         throw `Unknown game type: ${gameType}. Aborting!`;
     }
@@ -90,6 +96,8 @@ function calculateCorrectAnswer() {
         return [operand1 * operand2, "multiply"];
     } else if (operator === "-") {
         return [operand1 - operand2, "subtract"];
+    } else if (operator === "/") {
+        return [operand1 / operand2, "division"];
     } else {
         alert(`Unimplemented operator ${operator}`);
         throw `Unimplemented operator ${operator}. Aborting!`;
@@ -132,4 +140,17 @@ function displayMultiplyQuestion(operand1, operand2) {
     document.getElementById("operator").textContent = "x";
 }
 
-function displayDivisionQuestion() {}
+function displayDivisionQuestion(operand1, operand2) {
+    // Ensure biggest integer is the dividend
+    let dividend = operand1 > operand2 ? operand1 : operand2;
+    let divisor = operand1 > operand2 ? operand2 : operand1;
+
+    // Adjust dividend if there's a remainder
+    if (dividend % divisor !== 0) {
+        dividend -= dividend % divisor;
+    }
+
+    document.getElementById("operand1").textContent = dividend;
+    document.getElementById("operand2").textContent = divisor;
+    document.getElementById("operator").textContent = "/";
+}
